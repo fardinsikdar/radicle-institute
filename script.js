@@ -113,33 +113,39 @@ update();
 
 });
 const form = document.getElementById("admissionForm");
+const submitBtn = form.querySelector("button[type='submit']");
 
 form.addEventListener("submit", function(e){
+    e.preventDefault();
 
-e.preventDefault();
+    // Disable button and change text to prevent multiple clicks
+    submitBtn.disabled = true;
+    const originalBtnText = submitBtn.innerText;
+    submitBtn.innerText = "Submitting...";
 
-fetch("https://script.google.com/macros/s/AKfycbynkP2r3jRbSW8V_93qVRWXWJVw26dSFNCwi6evo0hLFU2ZFY0_9c-d2jC9B1I_BeF5/exec",{
-
-method:"POST",
-
-body:new FormData(form)
-
-})
-
-.then(()=>{
-
-alert("Admission submitted successfully!");
-
-form.reset();
-
-})
-
-.catch(()=>{
-
-alert("Something went wrong.");
-
-});
-
+    fetch("https://script.google.com/macros/s/AKfycbxHgDBx1EAsVYmEn6aUIAd3lucR7aFmUIJAVTJrNDxkj-9viEN7X8RHHcOtED87JCcs/exec", {
+        method: "POST",
+        body: new FormData(form)
+    })
+    .then(response => response.json()) // Expect JSON response from backend
+    .then(data => {
+        if (data.status === "duplicate") {
+            alert("This mobile number has already submitted an admission form.");
+        } else if (data.status === "success") {
+            alert("Admission submitted successfully!");
+            form.reset();
+        } else {
+            alert("Something went wrong. Please try again.");
+        }
+    })
+    .catch(() => {
+        alert("Something went wrong.");
+    })
+    .finally(() => {
+        // Re-enable the button after process completes
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+    });
 });
 function comingSoon() {
     alert("📚 Study notes will be available soon. Please check back later.");
