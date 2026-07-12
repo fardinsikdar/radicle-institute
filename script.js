@@ -131,7 +131,7 @@ form.addEventListener("submit", function(e){
     .then(() => {
         // Note: With no-cors, we cannot read the "duplicate" string directly via JSON, 
         // but the data will write safely. We handle full filtering securely in the sheet.
-        alert("Admission request processed! If this number was already registered, it will be skipped.");
+        alert("Your Admission form already Submitted");
         form.reset();
     })
     .catch((err) => {
