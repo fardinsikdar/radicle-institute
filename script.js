@@ -18,131 +18,156 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-
 // Hero button animation
-
 const buttons=document.querySelectorAll(".btn1,.btn2,.admission-btn");
 
 buttons.forEach(button=>{
+    button.addEventListener("mouseenter",()=>{
+        button.style.transform="translateY(-5px) scale(1.03)";
+    });
 
-button.addEventListener("mouseenter",()=>{
-
-button.style.transform="translateY(-5px) scale(1.03)";
-
+    button.addEventListener("mouseleave",()=>{
+        button.style.transform="translateY(0px)";
+    });
 });
-
-button.addEventListener("mouseleave",()=>{
-
-button.style.transform="translateY(0px)";
-
-});
-
-});
-
 
 // Card animation while scrolling
-
 const observer=new IntersectionObserver(entries=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-
-entry.target.style.opacity="1";
-entry.target.style.transform="translateY(0px)";
-
-}
-
-});
-
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            entry.target.style.opacity="1";
+            entry.target.style.transform="translateY(0px)";
+        }
+    });
 },{
-threshold:0.2
+    threshold:0.2
 });
-
 
 document.querySelectorAll(".card,.course-card,.feature-card,.fee-card,.contact-box,.promise-box").forEach(el=>{
-
-el.style.opacity="0";
-
-el.style.transform="translateY(50px)";
-
-el.style.transition="all .8s ease";
-
-observer.observe(el);
-
+    el.style.opacity="0";
+    el.style.transform="translateY(50px)";
+    el.style.transition="all .8s ease";
+    observer.observe(el);
 });
 
-
 // Counter Animation
-
 const counters=document.querySelectorAll(".card h2");
 
 counters.forEach(counter=>{
+    const update=()=>{
+        const target=parseInt(counter.innerText);
+        if(isNaN(target)) return;
 
-const update=()=>{
+        let count=0;
+        const speed=target/80;
 
-const target=parseInt(counter.innerText);
+        const interval=setInterval(()=>{
+            count+=speed;
+            if(count>=target){
+                counter.innerText=target+"+";
+                clearInterval(interval);
+            }else{
+                counter.innerText=Math.floor(count);
+            }
+        },20);
+    };
+    update();
+});
 
-if(isNaN(target)) return;
+// ===================================================
+// ADMISSION & PAYMENT MODAL WORKFLOW WITH PDF RECEIPT
+// ===================================================
 
-let count=0;
-
-const speed=target/80;
-
-const interval=setInterval(()=>{
-
-count+=speed;
-
-if(count>=target){
-
-counter.innerText=target+"+";
-
-clearInterval(interval);
-
-}else{
-
-counter.innerText=Math.floor(count);
-
+// 1. Open Pop-up Layer Window
+function openPaymentWindow() {
+    const formElement = document.getElementById("admissionForm");
+    if (formElement.checkValidity()) {
+        document.getElementById("paymentModalOverlay").style.display = "flex";
+    } else {
+        alert("Please fill out all required fields before moving to payment.");
+        formElement.reportValidity(); 
+    }
 }
 
-},20);
+// 2. Close Pop-up Layer Window
+function closePaymentWindow() {
+    document.getElementById("paymentModalOverlay").style.display = "none";
+}
 
-};
+// 3. Local PDF Generation Handler (Triggers BEFORE Form Reset)
+function generateDownloadablePDF() {
+    const sName = document.getElementById("studentName").value;
+    const sClass = document.getElementById("studentClass").value;
+    const pName = document.getElementById("parentName").value;
+    const mobileNum = document.getElementById("mobile").value;
+    const transactionNum = document.getElementById("transactionId").value.trim();
+    const currentDate = new Date().toLocaleDateString('en-IN', {
+        dateStyle: 'long'
+    });
 
-update();
+    // Write input values straight into our hidden canvas spans
+    document.getElementById("rcptDate").innerText = currentDate;
+    document.getElementById("rcptStudentName").innerText = sName;
+    document.getElementById("rcptClass").innerText = sClass;
+    document.getElementById("rcptParentName").innerText = pName;
+    document.getElementById("rcptMobile").innerText = mobileNum;
+    document.getElementById("rcptTxId").innerText = transactionNum;
 
-});
-const form = document.getElementById("admissionForm");
-const submitBtn = form.querySelector("button[type='submit']");
+    const receiptElement = document.getElementById("receiptTemplate");
 
-form.addEventListener("submit", function(e){
-    e.preventDefault();
+    const options = {
+        margin:       0.5,
+        filename:     'Radicle_Institute_Admission_Receipt_' + mobileNum + '.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    return html2pdf().set(options).from(receiptElement).save();
+}
+
+// 4. Final Sheet Handshake Database Submission Flow
+function submitAdmissionData() {
+    const txVal = document.getElementById("transactionId").value.trim();
+    const submitBtn = document.getElementById("finalSubmitBtn");
+    const mainForm = document.getElementById("admissionForm");
+
+    if (txVal.length < 12 || isNaN(txVal)) {
+        alert("Please supply a valid 12-digit UPI UTR validation code number.");
+        return;
+    }
 
     submitBtn.disabled = true;
-    const originalBtnText = submitBtn.innerText;
-    submitBtn.innerText = "Submitting...";
+    submitBtn.innerText = "Processing Details...";
 
-    // Added mode: 'no-cors' to prevent mobile browser blocks
-    fetch("https://script.google.com/macros/s/AKfycbynkP2r3jRbSW8V_93qVRWXWJVw26dSFNCwi6evo0hLFU2ZFY0_9c-d2jC9B1I_BeF5/exec", {
+    let submissionPayload = new FormData(mainForm);
+    submissionPayload.append("transactionId", txVal);
+
+    // PASTE YOUR GOOGLE DEPLOYMENT URL HERE BELOW:
+    fetch("https://script.google.com/macros/s/AKfycby4ZJ5mmnYERHezU_QDU4TiSap1NtPEIzSAXFykcYOMd7udNjX8dU05-qd9MLYKOS4V/exec", {
         method: "POST",
-        mode: "no-cors", 
-        body: new FormData(form)
+        mode: "no-cors",
+        body: submissionPayload
     })
     .then(() => {
-        // Note: With no-cors, we cannot read the "duplicate" string directly via JSON, 
-        // but the data will write safely. We handle full filtering securely in the sheet.
-        alert("Your Admission form already Submitted");
-        form.reset();
+        alert("Form details verified successfully! Your Admission Receipt PDF download will start now.");
+        
+        // Safely generate PDF first, then clear variables and refresh browser view context
+        generateDownloadablePDF().then(() => {
+            closePaymentWindow();
+            mainForm.reset();
+            document.getElementById("transactionId").value = "";
+            location.reload();
+        });
     })
-    .catch((err) => {
-        console.error(err);
-        alert("Something went wrong. Please check your internet connection.");
-    })
-    .finally(() => {
+    .catch(() => {
+        alert("Something went wrong with the database connection. Please try again.");
         submitBtn.disabled = false;
-        submitBtn.innerText = originalBtnText;
+        submitBtn.innerText = "Confirm Payment & Submit Form";
     });
-});
+}
+
+// Coming Soon Alert
 function comingSoon() {
     alert("📚 Study notes will be available soon. Please check back later.");
 }
