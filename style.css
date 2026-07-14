@@ -944,25 +944,25 @@ footer{
 /* Base card format - texts sit cleanly underneath */
 .row-card {
     background: #fff;
-    padding: 12px 10px !important;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.05);
+    padding: 10px !important;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.04);
     text-align: center;
-    border-bottom: 3px solid #0056d6 !important;
+    border-bottom: none !important; /* Removed the blue bottom border */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
 }
 
-/* Photo container occupying its own vertical block space */
+/* Photo container - clean rectangle without borders or circular masks */
 .row-card .student-img-wrapper {
     width: 100% !important;
-    aspect-ratio: 4 / 5; /* Preserves the classic rectangular portrait framing */
-    margin: 0 0 12px 0 !important;
+    aspect-ratio: 4 / 5; /* Preserves the portrait framing */
+    margin: 0 0 10px 0 !important;
     padding: 0 !important;
-    border: 2px solid #0056d6 !important;
-    border-radius: 10px !important;
+    border: none !important; /* Completely removes any border outline */
+    border-radius: 8px !important; /* Soft edge match for the card layout */
     overflow: hidden;
 }
 
@@ -978,11 +978,11 @@ footer{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .row-card h3 {
-    font-size: 16px !important;
+    font-size: 15px !important;
     color: #222 !important;
     font-weight: 600;
     margin: 0 !important;
@@ -997,37 +997,26 @@ footer{
     background: #e6efff !important;
     color: #0056d6 !important;
     font-size: 13px !important;
-    padding: 4px 12px !important;
+    padding: 3px 10px !important;
     border-radius: 50px;
     font-weight: 700;
 }
 
-/* MOBILE RESPONSIVE MEDIA QUERY: Forces strict 5 columns with compressed text sizing */
+/* MOBILE RESPONSIVE MEDIA QUERY */
 @media (max-width: 768px) {
-    .batch-heading {
-        font-size: 22px;
-        margin-bottom: 15px;
-    }
-
     .results-five-grid {
         grid-template-columns: repeat(5, 1fr) !important;
         gap: 6px !important;
     }
     
     .row-card {
-        padding: 6px 4px !important;
-        border-radius: 8px;
-        border-bottom-width: 2px !important;
+        padding: 4px !important;
+        border-radius: 6px;
     }
     
     .row-card .student-img-wrapper {
-        margin-bottom: 6px !important;
-        border-width: 1px !important;
-        border-radius: 5px !important;
-    }
-    
-    .student-below-details {
-        gap: 4px;
+        margin-bottom: 4px !important;
+        border-radius: 4px !important;
     }
     
     .row-card h3 {
@@ -1036,6 +1025,6 @@ footer{
     
     .row-card .student-score {
         font-size: 9px !important;
-        padding: 2px 4px !important;
+        padding: 1px 4px !important;
     }
 }
