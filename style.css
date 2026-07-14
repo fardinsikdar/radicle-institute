@@ -866,3 +866,126 @@ footer{
     transform: translateY(-3px); /* Adds the identical lift animation as your hero buttons */
     box-shadow: 0 5px 15px rgba(0, 86, 214, 0.2);
 }
+/* ALL RESULTS PAGE - 5 COLUMN GRID STYLING */
+.results-five-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* Micro-adjustments for cards in the 5-column view */
+.row-card {
+    padding: 15px 10px !important;
+}
+
+.row-card .student-img-wrapper {
+    width: 80px;
+    height: 80px;
+}
+
+/* MOBILE MEDIA QUERY: Forces 5 columns even under 768px screens */
+@media (max-width: 768px) {
+    .results-five-grid {
+        grid-template-columns: repeat(5, 1fr) !important; /* Forces 5 items per row */
+        gap: 5px !important; /* Closes spacing gaps to fit the screen width */
+    }
+    
+    .row-card {
+        padding: 8px 4px !important;
+    }
+    
+    .row-card .student-img-wrapper {
+        width: 50px;
+        height: 50px;
+        border-width: 2px;
+    }
+    
+    .row-card .student-year {
+        font-size: 9px !important;
+    }
+    
+    .row-card h3 {
+        font-size: 11px !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; /* Prevents long names from breaking lines */
+    }
+    
+    .row-card .student-score {
+        font-size: 10px !important;
+        padding: 2px 6px !important;
+    }
+}
+/* ALL RESULTS PAGE - 5 COLUMN GRID STYLING */
+.batch-year-section {
+    max-width: 1300px;
+    margin: 0 auto 50px auto;
+    padding: 0 15px;
+}
+
+.batch-heading {
+    font-size: 28px;
+    color: #0056d6;
+    border-bottom: 2px solid #e6efff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+    font-weight: 700;
+}
+
+.results-five-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+}
+
+/* Micro-adjustments for cards in the 5-column view */
+.row-card {
+    padding: 15px 10px !important;
+}
+
+.row-card .student-img-wrapper {
+    width: 80px;
+    height: 80px;
+}
+
+/* MOBILE MEDIA QUERY: Forces 5 columns even under 768px screens */
+@media (max-width: 768px) {
+    .batch-heading {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .results-five-grid {
+        grid-template-columns: repeat(5, 1fr) !important; /* Forces 5 items per row */
+        gap: 5px !important; /* Closes spacing gaps to fit the screen width */
+    }
+    
+    .row-card {
+        padding: 8px 4px !important;
+    }
+    
+    .row-card .student-img-wrapper {
+        width: 50px;
+        height: 50px;
+        border-width: 2px;
+    }
+    
+    .row-card .student-year {
+        font-size: 9px !important;
+    }
+    
+    .row-card h3 {
+        font-size: 11px !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; /* Prevents long names from breaking lines */
+    }
+    
+    .row-card .student-score {
+        font-size: 10px !important;
+        padding: 2px 6px !important;
+    }
+}
