@@ -918,72 +918,116 @@ footer{
         padding: 2px 6px !important;
     }
 }
-/* ALL RESULTS PAGE - 5 COLUMN GRID STYLING */
-.batch-year-section {
-    max-width: 1300px;
-    margin: 0 auto 50px auto;
-    padding: 0 15px;
-}
-
-.batch-heading {
-    font-size: 28px;
-    color: #0056d6;
-    border-bottom: 2px solid #e6efff;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    text-align: left;
-    font-weight: 700;
-}
-
+/* ALL RESULTS PAGE - MODERN FLOATING OVERLAY CARDS */
 .results-five-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
+    gap: 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
-/* Micro-adjustments for cards in the 5-column view */
+/* Make the student card use the full rectangular frame */
 .row-card {
-    padding: 15px 10px !important;
+    position: relative;
+    padding: 0 !important; /* Removes default card padding */
+    overflow: hidden;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-bottom: none !important; /* Replaces the old border */
+    aspect-ratio: 4 / 5; /* Forces a consistent vertical rectangular frame */
+    background: #000; /* Dark baseline in case image fails */
 }
 
+/* Make the student photo completely fill the layout frame */
 .row-card .student-img-wrapper {
-    width: 80px;
-    height: 80px;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
 }
 
-/* MOBILE MEDIA QUERY: Forces 5 columns even under 768px screens */
-@media (max-width: 768px) {
-    .batch-heading {
-        font-size: 22px;
-        margin-bottom: 15px;
+.row-card .student-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0 !important;
+    transition: transform 0.5s ease;
+}
+
+.row-card:hover .student-img-wrapper img {
+    transform: scale(1.08); /* Sleek zoom effect on hover */
+}
+
+/* The floating details overlay block with dark gradient shadow */
+.student-overlay-details {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 15px 15px 15px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    color: #ffffff;
+    z-index: 2;
+}
+
+/* Floating styling updates for text fields */
+.row-card .student-year {
+    font-size: 11px !important;
+    color: #38b6ff !important; /* High contrast bright accent color */
+    font-weight: 700;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    margin-bottom: 3px;
+}
+
+.row-card h3 {
+    font-size: 18px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    margin-bottom: 5px !important;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.row-card .student-score {
+    background: #28a745 !important; /* Solid high-contrast success green color badge */
+    color: #ffffff !important;
+    font-size: 13px !important;
+    padding: 4px 12px !important;
+    border-radius: 50px;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* RESPONSIVE MOBILE ADJUSTMENTS: Retains 5 columns but shrinks typography perfectly */
+@media (max-width: 1024px) {
+    .results-five-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 8px !important;
+    }
+    
+    .student-overlay-details {
+        padding: 12px 6px 8px 6px;
     }
 
-    .results-five-grid {
-        grid-template-columns: repeat(5, 1fr) !important; /* Forces 5 items per row */
-        gap: 5px !important; /* Closes spacing gaps to fit the screen width */
+    .row-card h3 {
+        font-size: 12px !important;
     }
-    
-    .row-card {
-        padding: 8px 4px !important;
-    }
-    
-    .row-card .student-img-wrapper {
-        width: 50px;
-        height: 50px;
-        border-width: 2px;
-    }
-    
+
     .row-card .student-year {
         font-size: 9px !important;
     }
-    
-    .row-card h3 {
-        font-size: 11px !important;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis; /* Prevents long names from breaking lines */
-    }
-    
+
     .row-card .student-score {
         font-size: 10px !important;
         padding: 2px 6px !important;
