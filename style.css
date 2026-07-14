@@ -958,18 +958,19 @@ footer{
 /* Photo container - clean rectangle without borders or circular masks */
 .row-card .student-img-wrapper {
     width: 100% !important;
-    aspect-ratio: 4 / 5; /* Preserves the portrait framing */
+    aspect-ratio: 1 / 1 !important; /* Forces a perfect 1:1 square ratio instead of 4:5 portrait */
     margin: 0 0 10px 0 !important;
     padding: 0 !important;
-    border: none !important; /* Completely removes any border outline */
-    border-radius: 8px !important; /* Soft edge match for the card layout */
+    border: none !important;
+    border-radius: 0px !important; /* Removes the inherited 50% circle/oval shape */
     overflow: hidden;
 }
 
 .row-card .student-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 0px !important; /* Forces the image edges to stay square */
 }
 
 /* Card details panel arranged below the photo */
